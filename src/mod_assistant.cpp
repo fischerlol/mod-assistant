@@ -1390,7 +1390,7 @@ public:
             player->ModifyMoney(-professionCost);
             CloseGossipMenuFor(player);
         }
-        else if (action == ASSISTANT_GOSSIP_LEVEL + 1)
+        else if (action == ASSISTANT_GOSSIP_LEVEL)
         {
             if (player->getLevel() != ASSISTANT_LEVEL_60)
             {

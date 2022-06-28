@@ -2,16 +2,16 @@
 
 ### VENDORS ###
 # Obtain armor from the assistant npc
-Assistant.Armor = 0
+Assistant.Armor = 1
 
 # Obtain weapons from the assistant npc
-Assistant.Weapons = 0
+Assistant.Weapons = 1
 
 # Obtain glyphs from the assistant npc
-Assistant.Glyphs = 0
+Assistant.Glyphs = 1
 
 # Obtain containers from the assistant npc
-Assistant.Containers = 0
+Assistant.Containers = 1
 ###
 
 ### PROFESSIONS ###
@@ -36,5 +36,5 @@ Assistant.Professions.GrandMaster.Cost = 2500
 ###
 
 ### LEVELS ###
-# Set level to 60
+# Allows player to set their level to 60
 Assistant.Levels.Enabled = 1
