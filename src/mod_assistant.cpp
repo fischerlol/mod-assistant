@@ -1391,6 +1391,7 @@ public:
         }
         return true;
     }
+};
 
 class Configuration : public WorldScript
 {
