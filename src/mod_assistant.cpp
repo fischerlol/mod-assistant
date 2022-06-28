@@ -177,7 +177,6 @@ public:
                     break;
                 case CLASS_DEATH_KNIGHT:
                     return "DeathKnight";
-                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
                     break;
                 default:
                     break;
