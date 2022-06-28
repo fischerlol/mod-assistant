@@ -215,6 +215,15 @@ public:
         {
             player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_RELIC);
         }
+        else if (action == ASSISTANT_GOSSIP_WEAPON)
+        {
+            ClearGossipMenuFor(player);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want one-hand weapons", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_WEAPON + 1);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want two-hand weapons", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_WEAPON + 2);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want off-hand weapons", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_WEAPON + 3);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
+            SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
+        }
          else if (action == ASSISTANT_GOSSIP_WEAPON + 1)
         {
             player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_WEAPON_ONE_HAND);
