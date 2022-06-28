@@ -104,7 +104,7 @@ public:
         if (enableProfessions)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want professions", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONS);
 
-        if (enableLevel && (player->getLevel() != 60))
+        if (enableLevel && player->getLevel() != 60)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want levels", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_LEVEL);
 
         SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
