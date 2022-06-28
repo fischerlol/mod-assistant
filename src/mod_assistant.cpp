@@ -54,10 +54,11 @@ enum Profession
 enum Level
 {
     ASSISTANT_LEVEL_60 = 60,
-}
+};
 
 // Vendors
-bool enableGear;
+bool enableArmor;
+bool enableWeapons;
 bool enableGlyphs;
 bool enableContainers;
 
