@@ -104,7 +104,7 @@ public:
         if (enableProfessions)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want professions", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONS);
 
-        if (enableProfessions)
+        if (enableLevels)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want levels", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_LEVEL);
 
         SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
@@ -123,7 +123,10 @@ public:
         else if (action == ASSISTANT_GOSSIP_ARMOR)
         {
             ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want tier 2", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 1);
+            if (player->getClass() != CLASS_DEATH_KNIGHT) 
+            {
+                AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want tier 2", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 1);
+            }
             AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want cloth", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 2);
             AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want leather", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 3);
             AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want mail", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 4);
