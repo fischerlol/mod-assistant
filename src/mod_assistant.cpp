@@ -7,22 +7,38 @@
 enum GossipId
 {
     ASSISTANT_GOSSIP_TEXT = 48,
-    ASSISTANT_GOSSIP_HEIRLOOM = 100,
-    ASSISTANT_GOSSIP_GLYPH = 200,
-    ASSISTANT_GOSSIP_GEM = 400,
-    ASSISTANT_GOSSIP_CONTAINER = 500,
-    ASSISTANT_GOSSIP_UTILITIES = 600,
-    ASSISTANT_GOSSIP_PROFESSIONS = 700,
+    ASSISTANT_GOSSIP_ARMOR = 100,
+    ASSISTANT_GOSSIP_WEAPON = 200,
+    ASSISTANT_GOSSIP_GLYPH = 300,
+    ASSISTANT_GOSSIP_CONTAINER = 400,
+    ASSISTANT_GOSSIP_PROFESSIONS = 500,
+    ASSISTANT_GOSSIP_LEVEL = 600,
 };
 
 enum VendorId
 {
-    ASSISTANT_VENDOR_HEIRLOOM_WEAPON = 9000000,
-    ASSISTANT_VENDOR_HEIRLOOM_ARMOR = 9000001,
-    ASSISTANT_VENDOR_HEIRLOOM_OTHER = 9000002,
-    ASSISTANT_VENDOR_GLYPH = 9000003,
-    ASSISTANT_VENDOR_GEM = 9000023,
-    ASSISTANT_VENDOR_CONTAINER = 9000030,
+    ASSISTANT_VENDOR_GEAR_WEAPON_ONE_HAND = 9000000,
+    ASSISTANT_VENDOR_GEAR_WEAPON_TWO_HAND = 9000001,
+    ASSISTANT_VENDOR_GEAR_WEAPON_OFF_HAND = 9000002,
+    ASSISTANT_VENDOR_GEAR_TIER2_PRIEST = 9000003,
+    ASSISTANT_VENDOR_GEAR_TIER2_PALADIN = 9000004,
+    ASSISTANT_VENDOR_GEAR_TIER2_WARRIOR = 9000005,
+    ASSISTANT_VENDOR_GEAR_TIER2_MAGE = 9000006,
+    ASSISTANT_VENDOR_GEAR_TIER2_WARLOCK = 9000007,
+    ASSISTANT_VENDOR_GEAR_TIER2_SHAMAN = 9000008,
+    ASSISTANT_VENDOR_GEAR_TIER2_DRUID = 9000009,
+    ASSISTANT_VENDOR_GEAR_TIER2_HUNTER = 9000010,
+    ASSISTANT_VENDOR_GEAR_TIER2_ROGUE = 9000011,
+    ASSISTANT_VENDOR_GEAR_CLOTH = 9000012,
+    ASSISTANT_VENDOR_GEAR_LEATHER = 9000013,
+    ASSISTANT_VENDOR_GEAR_MAIL = 9000014,
+    ASSISTANT_VENDOR_GEAR_PLATE = 9000015,
+    ASSISTANT_VENDOR_GEAR_RING = 9000016,
+    ASSISTANT_VENDOR_GEAR_TRINKET = 9000017,
+    ASSISTANT_VENDOR_GEAR_JEWELRY = 9000018,
+    ASSISTANT_VENDOR_GEAR_RELIC = 9000019,
+    ASSISTANT_VENDOR_GLYPH = 9000020,
+    ASSISTANT_VENDOR_CONTAINER = 9000021,
 };
 
 enum Profession
@@ -35,18 +51,15 @@ enum Profession
     PROFESSION_LEVEL_GRAND_MASTER = 450,
 };
 
-// Vendors
-bool enableHeirlooms;
-bool enableGlyphs;
-bool enableGems;
-bool enableContainers;
+enum Level
+{
+    ASSISTANT_LEVEL_60 = 60,
+}
 
-// Utilities
-bool enableUtilities;
-uint32 costNameChange;
-uint32 costCustomization;
-uint32 costRaceChange;
-uint32 costFactionChange;
+// Vendors
+bool enableGear;
+bool enableGlyphs;
+bool enableContainers;
 
 // Professions
 bool enableProfessions;
@@ -63,6 +76,9 @@ uint32 costArtisanProfession;
 uint32 costMasterProfession;
 uint32 costGrandMasterProfession;
 
+// Level
+bool enableLevel;
+
 class Assistant : public CreatureScript
 {
 public:
@@ -72,37 +88,23 @@ public:
     {
         ClearGossipMenuFor(player);
 
-        if (enableHeirlooms)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want heirlooms", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM);
+        if (enableArmor)
+            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want armor", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR);
+
+        if (enableWeapons)
+            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want weapons", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_WEAPON);
 
         if (enableGlyphs)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want glyphs", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GLYPH);
 
-        if (enableGems)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM);
-
         if (enableContainers)
             AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want containers", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_CONTAINER);
 
-        if (enableUtilities)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want utilities", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
+        if (enableProfessions)
+            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want professions", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONS);
 
-        if (enableProfessions && (enableApprenticeProfession || enableJourneymanProfession || enableExpertProfession || enableArtisanProfession || enableMasterProfession || enableGrandMasterProfession))
-            if (player->HasSkill(SKILL_FIRST_AID) ||
-                player->HasSkill(SKILL_BLACKSMITHING) ||
-                player->HasSkill(SKILL_LEATHERWORKING) ||
-                player->HasSkill(SKILL_ALCHEMY) ||
-                player->HasSkill(SKILL_HERBALISM) ||
-                player->HasSkill(SKILL_COOKING) ||
-                player->HasSkill(SKILL_MINING) ||
-                player->HasSkill(SKILL_TAILORING) ||
-                player->HasSkill(SKILL_ENGINEERING) ||
-                player->HasSkill(SKILL_ENCHANTING) ||
-                player->HasSkill(SKILL_FISHING) ||
-                player->HasSkill(SKILL_SKINNING) ||
-                player->HasSkill(SKILL_INSCRIPTION) ||
-                player->HasSkill(SKILL_JEWELCRAFTING))
-                AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want help with my professions", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONS);
+        if (enableProfessions)
+            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want levels", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_LEVEL);
 
         SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
         return true;
@@ -117,26 +119,112 @@ public:
         {
             OnGossipHello(player, creature);
         }
-        else if (action == ASSISTANT_GOSSIP_HEIRLOOM)
+        else if (action == ASSISTANT_GOSSIP_ARMOR)
         {
             ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want weapons", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM + 1);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want armor", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM + 2);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want something else", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM + 3);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want tier 2", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 1);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want cloth", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 2);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want leather", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 3);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want mail", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 4);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want plate", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 5);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want rings", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 6);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want trinkets", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 7);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want jewelry", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 8);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want relics", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ARMOR + 9);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
             SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
         }
-        else if (action == ASSISTANT_GOSSIP_HEIRLOOM + 1)
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 1)
         {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_HEIRLOOM_WEAPON);
+            switch (player->getClass())
+            {
+                case CLASS_PRIEST:
+                    return "Priest";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_PRIEST);
+                    break;
+                case CLASS_PALADIN:
+                    return "Paladin";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_PALADIN);
+                    break;
+                case CLASS_WARRIOR:
+                    return "Warrior";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_WARRIOR);
+                    break;
+                case CLASS_MAGE:
+                    return "Mage";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_MAGE);
+                    break;
+                case CLASS_WARLOCK:
+                    return "Warlock";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_WARLOCK);
+                    break;
+                case CLASS_SHAMAN:
+                    return "Shaman";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_SHAMAN);
+                    break;
+                case CLASS_DRUID:
+                    return "Druid";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_DRUID);
+                    break;
+                case CLASS_HUNTER:
+                    return "Hunter";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_HUNTER);
+                    break;
+                case CLASS_ROGUE:
+                    return "Rogue";
+                    player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TIER2_ROGUE);
+                    break;
+                case CLASS_DEATH_KNIGHT:
+                    return "DeathKnight";
+                    AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
+                    break;
+                default:
+                    break;
+            }
         }
-        else if (action == ASSISTANT_GOSSIP_HEIRLOOM + 2)
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 2)
         {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_HEIRLOOM_ARMOR);
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_CLOTH);
         }
-        else if (action == ASSISTANT_GOSSIP_HEIRLOOM + 3)
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 3)
         {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_HEIRLOOM_OTHER);
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_LEATHER);
+        }
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 4)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_MAIL);
+        }
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 5)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_PLATE);
+        }
+        else if (action == ASSISTANT_GOSSIP_ARMOR + 6)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_RING);
+        }
+         else if (action == ASSISTANT_GOSSIP_ARMOR + 7)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_TRINKET);
+        }
+         else if (action == ASSISTANT_GOSSIP_ARMOR + 8)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_JEWELRY);
+        }
+         else if (action == ASSISTANT_GOSSIP_ARMOR + 9)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_RELIC);
+        }
+         else if (action == ASSISTANT_GOSSIP_WEAPON + 1)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_WEAPON_ONE_HAND);
+        }
+        else if (action == ASSISTANT_GOSSIP_WEAPON + 2)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_WEAPON_TWO_HAND);
+        }
+        else if (action == ASSISTANT_GOSSIP_WEAPON + 3)
+        {
+            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEAR_WEAPON_OFF_HAND);
         }
         else if (action == ASSISTANT_GOSSIP_GLYPH)
         {
@@ -218,120 +306,9 @@ public:
                 break;
             }
         }
-        else if (action == ASSISTANT_GOSSIP_GEM)
-        {
-            ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some meta gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 1);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some red gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 2);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some blue gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 3);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some yellow gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 4);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some purple gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 5);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some green gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 6);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want some orange gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM + 7);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
-            SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 1)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 2)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 1);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 3)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 2);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 4)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 3);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 5)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 4);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 6)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 5);
-        }
-        else if (action == ASSISTANT_GOSSIP_GEM + 7)
-        {
-            player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_GEM + 6);
-        }
         else if (action == ASSISTANT_GOSSIP_CONTAINER)
         {
             player->GetSession()->SendListInventory(creature->GetGUID(), ASSISTANT_VENDOR_CONTAINER);
-        }
-        else if (action == ASSISTANT_GOSSIP_UTILITIES)
-        {
-            ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want to change my name", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES + 1, "Do you wish to continue the transaction?", costNameChange, false);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want to change my appearance", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES + 2, "Do you wish to continue the transaction?", costCustomization, false);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want to change my race", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES + 3, "Do you wish to continue the transaction?", costRaceChange, false);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want to change my faction", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES + 4, "Do you wish to continue the transaction?", costFactionChange, false);
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
-            SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
-        }
-        else if (action == ASSISTANT_GOSSIP_UTILITIES + 1)
-        {
-            if (hasLoginFlag(player))
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("You have to complete the previously activated feature before trying to perform another.");
-                OnGossipSelect(player, creature, GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
-            }
-            else
-            {
-                player->ModifyMoney(-costNameChange);
-                player->SetAtLoginFlag(AT_LOGIN_RENAME);
-                ChatHandler(player->GetSession()).PSendSysMessage("You can now log out to apply the name change.");
-                CloseGossipMenuFor(player);
-            }
-        }
-        else if (action == ASSISTANT_GOSSIP_UTILITIES + 2)
-        {
-            if (hasLoginFlag(player))
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("You have to complete the previously activated feature before trying to perform another.");
-                OnGossipSelect(player, creature, GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
-            }
-            else
-            {
-                player->ModifyMoney(-costCustomization);
-                player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
-                ChatHandler(player->GetSession()).PSendSysMessage("You can now log out to apply the customization.");
-                CloseGossipMenuFor(player);
-            }
-        }
-        else if (action == ASSISTANT_GOSSIP_UTILITIES + 3)
-        {
-            if (hasLoginFlag(player))
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("You have to complete the previously activated feature before trying to perform another.");
-                OnGossipSelect(player, creature, GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
-            }
-            else
-            {
-                player->ModifyMoney(-costRaceChange);
-                player->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
-                ChatHandler(player->GetSession()).PSendSysMessage("You can now log out to apply the race change.");
-                CloseGossipMenuFor(player);
-            }
-        }
-        else if (action == ASSISTANT_GOSSIP_UTILITIES + 4)
-        {
-            if (hasLoginFlag(player))
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("You have to complete the previously activated feature before trying to perform another.");
-                OnGossipSelect(player, creature, GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
-            }
-            else
-            {
-                player->ModifyMoney(-costFactionChange);
-                player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-                ChatHandler(player->GetSession()).PSendSysMessage("You can now log out to apply the faction change.");
-                CloseGossipMenuFor(player);
-            }
         }
         else if (action == ASSISTANT_GOSSIP_PROFESSIONS)
         {
@@ -1404,19 +1381,15 @@ public:
             player->ModifyMoney(-professionCost);
             CloseGossipMenuFor(player);
         }
-
+        else if (action == ASSISTANT_GOSSIP_LEVEL + 1)
+        {
+            if (player->getLevel() != ASSISTANT_LEVEL_60)
+            {
+                player->SetLevel(ASSISTANT_LEVEL_60, true);
+            }
+        }
         return true;
     }
-
-private:
-    bool hasLoginFlag(Player* player)
-    {
-        if (player->HasAtLoginFlag(AT_LOGIN_RENAME) || player->HasAtLoginFlag(AT_LOGIN_CUSTOMIZE) || player->HasAtLoginFlag(AT_LOGIN_CHANGE_RACE) || player->HasAtLoginFlag(AT_LOGIN_CHANGE_FACTION))
-            return true;
-
-        return false;
-    }
-};
 
 class Configuration : public WorldScript
 {
@@ -1426,17 +1399,10 @@ public:
     void OnAfterConfigLoad(bool /*reload*/) override
     {
         // Vendors
-        enableHeirlooms = sConfigMgr->GetOption<bool>("Assistant.Heirlooms", 0);
+        enableArmor = sConfigMgr->GetOption<bool>("Assistant.Armor", 0);
+        enableWeapons = sConfigMgr->GetOption<bool>("Assistant.Weapons", 0);
         enableGlyphs = sConfigMgr->GetOption<bool>("Assistant.Glyphs", 0);
-        enableGems = sConfigMgr->GetOption<bool>("Assistant.Gems", 0);
         enableContainers = sConfigMgr->GetOption<bool>("Assistant.Containers", 0);
-
-        // Utilities
-        enableUtilities = sConfigMgr->GetOption<bool>("Assistant.Utilities", 0);
-        costNameChange = sConfigMgr->GetOption<uint32>("Assistant.Utilities.NameChange", 10) * 10000;
-        costCustomization = sConfigMgr->GetOption<uint32>("Assistant.Utilities.Customization", 50) * 10000;
-        costRaceChange = sConfigMgr->GetOption<uint32>("Assistant.Utilities.RaceChange", 500) * 10000;
-        costFactionChange = sConfigMgr->GetOption<uint32>("Assistant.Utilities.FactionChange", 1000) * 10000;
 
         // Professions
         enableProfessions = sConfigMgr->GetOption<bool>("Assistant.Professions", 0);
@@ -1452,6 +1418,9 @@ public:
         costArtisanProfession = sConfigMgr->GetOption<uint32>("Assistant.Professions.Artisan.Cost", 750);
         costMasterProfession = sConfigMgr->GetOption<uint32>("Assistant.Professions.Master.Cost", 1250);
         costGrandMasterProfession = sConfigMgr->GetOption<uint32>("Assistant.Professions.GrandMaster.Cost", 2500);
+
+        // Level
+        enableLevel = sConfigMgr->GetOption<bool>("Assistant.Levels", 0);
     }
 };
 

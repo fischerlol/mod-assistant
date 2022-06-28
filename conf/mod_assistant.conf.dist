@@ -1,34 +1,17 @@
 [worldserver]
 
 ### VENDORS ###
-# Obtain heirlooms from the assistant npc
-Assistant.Heirlooms = 0
+# Obtain armor from the assistant npc
+Assistant.Armor = 0
+
+# Obtain weapons from the assistant npc
+Assistant.Weapons = 0
 
 # Obtain glyphs from the assistant npc
 Assistant.Glyphs = 0
 
-# Obtain gems from the assistant npc
-Assistant.Gems = 0
-
 # Obtain containers from the assistant npc
 Assistant.Containers = 0
-###
-
-### UTILTIIES ###
-# Obtain utilties from the assistant npc
-Assistant.Utilities = 0
-
-# The amount of gold required to perform a name change
-Assistant.Utilities.NameChange = 10
-
-# The amount of gold required to perform a change in appearance
-Assistant.Utilities.Customization = 50
-
-# The amount of gold required to perform a race change
-Assistant.Utilities.RaceChange = 500
-
-# The amount of gold required to perform a faction change
-Assistant.Utilities.FactionChange = 1000
 ###
 
 ### PROFESSIONS ###
@@ -51,3 +34,7 @@ Assistant.Professions.Artisan.Cost = 750
 Assistant.Professions.Master.Cost = 1250
 Assistant.Professions.GrandMaster.Cost = 2500
 ###
+
+### LEVELS ###
+# Set level to 60
+Assistant.Levels.Enabled = 1
