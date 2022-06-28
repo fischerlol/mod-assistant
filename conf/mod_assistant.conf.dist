@@ -37,4 +37,4 @@ Assistant.Professions.GrandMaster.Cost = 2500
 
 ### LEVELS ###
 # Allows player to set their level to 60
-Assistant.Levels.Enabled = 1
+Assistant.Levels = 1
