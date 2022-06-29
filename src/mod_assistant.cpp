@@ -80,6 +80,9 @@ uint32 costGrandMasterProfession;
 // Level
 bool enableLevel;
 
+// Global
+bool enableAssistant;
+
 class Assistant : public CreatureScript
 {
 public:
@@ -88,7 +91,7 @@ public:
     bool OnGossipHello(Player* player, Creature* creature)
     {
 
-        if (!sConfigMgr->GetOption<bool>("Assistant.Enable", false))
+        if (!enableAssistant)
             return false;
 
         ClearGossipMenuFor(player);
@@ -117,6 +120,10 @@ public:
 
     bool OnGossipSelect(Player* player, Creature* creature, uint32 sender, uint32 action)
     {
+
+         if (!enableAssistant)
+            return false;
+
         if (sender != GOSSIP_SENDER_MAIN)
             return false;
 
@@ -1438,6 +1445,9 @@ public:
 
         // Level
         enableLevel = sConfigMgr->GetOption<bool>("Assistant.Levels", 0);
+
+        // Global
+        enableAssistant = sConfigMgr->GetOption<bool>("Assistant.Enable", 0);
     }
 };
 
