@@ -1,5 +1,17 @@
 [worldserver]
 
+########################################
+# Assistant module configuration
+########################################
+#
+#    Hardcore.Enable
+#        Description: Enable the hardcore module and print a message at server start
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+Assistant.Enable = 0
+
 ### VENDORS ###
 # Obtain armor from the assistant npc
 Assistant.Armor = 1

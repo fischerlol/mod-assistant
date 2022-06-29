@@ -87,6 +87,10 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
+
+        if (!sConfigMgr->GetOption<bool>("Assistant.Enable", false))
+            return;
+
         ClearGossipMenuFor(player);
 
         if (enableArmor)
