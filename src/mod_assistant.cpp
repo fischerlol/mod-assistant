@@ -89,7 +89,7 @@ public:
     {
 
         if (!sConfigMgr->GetOption<bool>("Assistant.Enable", false))
-            return;
+            return false;
 
         ClearGossipMenuFor(player);
 
